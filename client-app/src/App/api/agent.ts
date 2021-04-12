@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from 'axios'
 import { Activity } from '../../models/Activity';
 
-const sleep =(delay: number) => {
+const sleep = (delay: number) => {
     return new Promise((resolve) => {
-        setTimeout(resolve, delay)
+        setTimeout(resolve, delay);
     })
 }
 
@@ -25,16 +25,16 @@ const responseBody = <T> (Response: AxiosResponse<T>) => Response.data;
 const requests = {
     get: <T> (url: string) => axios.get<T>(url).then(responseBody),
     post: <T> (url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
-    put: <T> (url: string, body: {}) => axios.put(url, body).then<T>(responseBody),
+    put: <T> (url: string, body: {}) => axios.put<T>(url, body).then<T>(responseBody),
     del: <T> (url: string) => axios.delete(url).then<T>(responseBody)
 }
 
 const Activities = {
     list: () => requests.get<Activity[]>('/activities'),
     details: (id: string) => requests.get<Activity>(`/activities/${id}`),
-    create: (activity: Activity) => requests.post('/activities', activity),
-    update: (activity: Activity) => requests.put(`/activities/${activity.id}`, activity),
-    delete: (id: string) => requests.del(`/activities/${id}`)
+    create: (activity: Activity) => requests.post<void>('/activities', activity),
+    update: (activity: Activity) => requests.put<void>(`/activities/${activity.id}`, activity),
+    delete: (id: string) => requests.del<void>(`/activities/${id}`)
 }
 
 const agent = {
